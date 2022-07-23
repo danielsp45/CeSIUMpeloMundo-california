@@ -1,7 +1,14 @@
 import { MapContainer, TileLayer, LayersControl } from 'react-leaflet';
 import Marker from '~/components/Marker';
+import type { Pin } from '~/components/Marker';
 
-const tiles = [
+type Tyle = {
+  name: string;
+  url: string;
+  checked?: boolean;
+};
+
+const tiles: Tyle[] = [
   {
     name: 'Earth',
     url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -17,7 +24,7 @@ const tiles = [
   }
 ];
 
-const Tile = ({ url, name, checked }) => (
+const TileController = ({ url, name, checked }: Tyle) => (
   <LayersControl.BaseLayer checked={checked} name={name}>
     <TileLayer
       url={url}
@@ -26,7 +33,7 @@ const Tile = ({ url, name, checked }) => (
   </LayersControl.BaseLayer>
 );
 
-export default function Map({ pins }) {
+export default function Map({ pins }: { pins: Pin[] }) {
   return (
     <MapContainer
       center={[40, 0]}
@@ -36,7 +43,7 @@ export default function Map({ pins }) {
     >
       <LayersControl position="topright">
         {tiles.map((tile) => (
-          <Tile key={tile.name} {...tile} />
+          <TileController key={tile.name} {...tile} />
         ))}
       </LayersControl>
       {pins.map((pin) => (
